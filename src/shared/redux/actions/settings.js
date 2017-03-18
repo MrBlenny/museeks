@@ -27,7 +27,6 @@ const library = (lib) => {
         document.querySelector('body').classList.add(`theme-${newTheme}`);
 
         dispatch(lib.actions.config.set('theme', newTheme));
-        dispatch(lib.actions.config.save());
 
         return {
             type: 'APP_REFRESH_CONFIG'
@@ -36,7 +35,6 @@ const library = (lib) => {
 
     const toggleSleepBlocker = (value) => (dispatch) => {
         dispatch(lib.actions.config.set('sleepBlocker', value));
-        dispatch(lib.actions.config.save());
 
         lib.app.toggleSleepBlocker(value, 'prevent-app-suspension');
 
@@ -52,7 +50,6 @@ const library = (lib) => {
         else lib.app.browserWindows.main.webContents.closeDevTools();
 
         dispatch(lib.actions.config.set('devMode', value));
-        dispatch(lib.actions.config.save());
 
         dispatch({
             type: 'APP_REFRESH_CONFIG'
@@ -61,7 +58,6 @@ const library = (lib) => {
 
     const toggleAutoUpdateChecker = (value) => (dispatch) => {
         dispatch(lib.actions.config.set('autoUpdateChecker', value));
-        dispatch(lib.actions.config.save());
 
         dispatch({
             type: 'APP_REFRESH_CONFIG'
@@ -94,13 +90,11 @@ const library = (lib) => {
 
     const toggleNativeFrame = (value) => (dispatch) => {
         dispatch(lib.actions.config.set('useNativeFrame', value));
-        dispatch(lib.actions.config.save());
         lib.app.restart();
     };
 
     const toggleMinimizeToTray = (value) => (dispatch) => {
         dispatch(lib.actions.config.set('minimizeToTray', value));
-        dispatch(lib.actions.config.save());
 
         dispatch({
             type: 'APP_REFRESH_CONFIG'
@@ -118,7 +112,6 @@ const library = (lib) => {
 
     const toggleDisplayNotifications = (value) => (dispatch) => {
         dispatch(lib.actions.config.set('displayNotifications', value));
-        dispatch(lib.actions.config.save());
 
         dispatch({
             type: 'APP_REFRESH_CONFIG'

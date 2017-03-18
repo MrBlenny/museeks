@@ -49,7 +49,10 @@ const getStatus = (tracks) => {
  * @return string
  */
 const parseUri = (uri) => {
-    const root = process.platform === 'win32' ? '' : path.parse(uri).root;
+    const root = process.platform === 'win32'
+        ? ''
+        : path.parse(uri).root;
+
     const location = uri
         .split(path.sep)
         .map((d, i) => i === 0
@@ -82,20 +85,14 @@ const parseBase64 = (format, data) => {
  */
 const simpleSort = (array, sorting) => {
     if (sorting === 'asc') {
-        array.sort((a, b) => {
-            return a - b;
-        });
+        array.sort((a, b) => a - b);
     } else if (sorting === 'desc') {
-        array.sort((a, b) => {
-            return b - a;
-        });
+        array.sort((a, b) => b - a);
     }
 
-
-    const result = [];
-    array.forEach((item) => {
+    const result = array.reduce((result, item) => {
         if (!result.includes(item)) result.push(item);
-    });
+    }, []);
 
     return result;
 };
@@ -125,6 +122,7 @@ const stripAccents = (str) => {
  * @param array the array of folders path
  * @return array
  */
+
 const removeUselessFolders = (folders) => {
     // Remove duplicates
     let filteredFolders = folders.filter((elem, index) => {

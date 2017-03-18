@@ -1,17 +1,21 @@
 export default (config) => {
     return {
-        tracks: {
-            library: {                   // Tracks of the library view
-                all: null,               // All tracks
-                sub: null                // Filtered tracks (e.g search)
-            },
-            playlist: {
-                all: null,
-                sub: null
-            }
-        },
+        // currentUser,
+        //
+        // peers,
+        // source: peer,
+        // destination: peer,
+        // observer: peer,
+        //
+        // songs: [],                       // replaces tracks structure below in deleted state
+        //
+        // nowPlaying: {
+        //
+        // }
 
-        tracksCursor: 'library',         // 'library' or 'playlist'
+        // old state to keep from here down
+
+        config,
 
         queue: [],                       // Tracks to be played
         queueCursor: null,               // The cursor of the queue
@@ -26,7 +30,21 @@ export default (config) => {
         refreshingLibrary: false,        // If the app is currently refreshing the app
         repeat: config.audioRepeat,      // the current repeat state (one, all, none)
         shuffle: config.audioShuffle,    // If shuffle mode is enabled
-        config: config,
-        refreshProgress: 0               // Progress of the refreshing library
+        refreshProgress: 0,              // Progress of refreshing the library
+
+        // old state to delete from here down
+
+        tracks: {
+            library: {                   // Tracks of the library view
+                all: null,               // All tracks
+                sub: null                // Filtered tracks (e.g search)
+            },
+            playlist: {
+                all: null,
+                sub: null
+            }
+        },
+
+        tracksCursor: 'library'          // 'library' or 'playlist'
     };
 }

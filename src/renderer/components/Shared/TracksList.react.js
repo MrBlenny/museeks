@@ -209,11 +209,9 @@ class TracksList extends Component {
 
     onKey(e) {
         const selected = this.state.selected;
-        const tracks   = this.props.tracks;
+        const tracks = this.props.tracks;
 
-        const firstSelectedTrackIdx = tracks.findIndex((track) => {
-            return selected.includes(track._id);
-        });
+        const firstSelectedTrackIdx = tracks.findIndex((track) => selected.includes(track._id));
 
         switch(e.keyCode) {
             case 38: // up
@@ -243,9 +241,9 @@ class TracksList extends Component {
     }
 
     buildTrackTiles() {
-        const self           = this;
-        const selected       = this.state.selected;
-        const tracks         = [...this.props.tracks];
+        const self = this;
+        const selected = this.state.selected;
+        const tracks = [...this.props.tracks];
         const trackPlayingId = this.props.trackPlayingId;
 
         const chunkLength = 20;
@@ -330,7 +328,7 @@ class TracksList extends Component {
     }
 
     multiSelect(e, id, index) {
-        const self   = this;
+        const self = this;
         const tracks = this.props.tracks;
         const selected = this.state.selected;
 

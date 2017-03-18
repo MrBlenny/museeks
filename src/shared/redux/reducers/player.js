@@ -9,9 +9,7 @@ export default (state = {}, action) => {
             // Check if we have to shuffle the queue
             if (state.shuffle) {
                 // need to check that later
-                const index = queue.findIndex((track) => {
-                    return track._id === id;
-                });
+                const index = queue.findIndex((track) => track._id === id);
 
                 const firstTrack = queue[index];
 

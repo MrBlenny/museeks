@@ -8,10 +8,10 @@ import { join, extname } from 'path';
 const realpath = Promise.promisify(fs.realpath);
 
 const library = (lib) => {
-console.log(lib)
+
     const load = () => ({
         type: 'APP_REFRESH_LIBRARY',
-        payload: lib.api.find({
+        payload: lib.api.track.find({
             query: {},
             sort: {
                 'loweredMetas.artist': 1,
@@ -80,6 +80,7 @@ console.log(lib)
             folders.splice(index, 1);
 
             dispatch(lib.actions.config.set('musicFolders', folders));
+            dispatch(lib.actions.config.save());
             dispatch({
                 type: 'APP_LIBRARY_UPDATE_FOLDERS',
                 payload: {

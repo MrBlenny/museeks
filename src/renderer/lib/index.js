@@ -17,7 +17,7 @@ const renderer = {
 };
 
 const shared = sharedLib(renderer);
-
+console.log('shared', shared)
 const lib = {
     ...renderer,
     ...shared

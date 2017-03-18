@@ -1,7 +1,8 @@
 import track from '../models/track';
 
-const find = (data) => track.findAsync(data.query);
-// const find = (data) => track.findAsync(data.query).sort(data.sort);
+const find = (data) => data.sort
+    ? track.findAsync(data.query).sort(data.sort)
+    : track.findAsync(data.query);
 
 const findOne = (data) => track.findOneAsync(data.query);
 

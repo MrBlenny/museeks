@@ -1,7 +1,8 @@
 import playlist from '../models/playlist';
 
-const find = (data) => playlist.findAsync(data.query);
-// const find = (data) => playlist.findAsync(data.query).sort(data.sort);
+const find = (data) => data.sort
+    ? playlist.findAsync(data.query).sort(data.sort)
+    : playlist.findAsync(data.query);
 
 const findOne = (data) => playlist.findOneAsync(data.query);
 

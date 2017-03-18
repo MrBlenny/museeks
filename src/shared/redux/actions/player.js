@@ -69,6 +69,7 @@ const library = (lib) => {
 
     const next = () => (dispatch, getState) => {
         const { someState } = getState();
+        if (true) {
             const uri = utils.parseUri(track.path);
 
             lib.player.setAudioSrc(uri);

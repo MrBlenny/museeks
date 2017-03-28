@@ -17,7 +17,7 @@ class Playlist extends Component {
 
     static propTypes = {
         params: React.PropTypes.object,
-        tracks: React.PropTypes.array,
+        tracks: React.PropTypes.object,
         trackPlayingId: React.PropTypes.string,
         playlists: React.PropTypes.array,
         playStatus: React.PropTypes.string
@@ -33,12 +33,16 @@ class Playlist extends Component {
     }
 
     render() {
+<<<<<<< HEAD:src/renderer/components/Playlists/Playlist.react.js
         if (Array.isArray(this.props.tracks) && this.props.tracks.length > 0) {
+=======
+        if(Array.isArray(this.props.tracks.sub) && this.props.tracks.sub.length > 0) {
+>>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Playlists/Playlist.react.js
             return (
                 <TracksList
                     type='playlist'
                     currentPlaylist={ this.props.params.playlistId }
-                    tracks={ this.props.tracks }
+                    tracks={ this.props.tracks.sub }
                     trackPlayingId={ this.props.trackPlayingId }
                     playlists={ this.props.playlists }
                     playStatus={ this.props.playStatus }

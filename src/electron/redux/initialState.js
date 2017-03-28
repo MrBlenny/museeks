@@ -43,8 +43,11 @@ export default {
     },
 
     library: {
-        refreshingLibrary: false,        // If the app is currently refreshing the app
-        refreshProgress: 0               // Progress of the refreshing library
+        refreshing : false,              // If the app is currently refreshing the app
+        refresh : {                      // Progress of the refreshing library
+            processed: 0,
+            total: 0,
+        },
     },
 
     playlists: [],

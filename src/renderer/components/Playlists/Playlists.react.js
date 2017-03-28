@@ -18,7 +18,6 @@ class Playlists extends Component {
     static propTypes = {
         params: React.PropTypes.object,
         children: React.PropTypes.object,
-        tracks: React.PropTypes.array,
         playlists: React.PropTypes.array,
         playStatus: React.PropTypes.string
     }

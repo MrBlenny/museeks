@@ -27,6 +27,14 @@ class PlaylistsNav extends Component {
         this.state = {
             renamed: null // the playlist being renamed if there's one
         };
+<<<<<<< HEAD:src/renderer/components/Playlists/PlaylistsNav.react.js
+=======
+
+        this.blur            = this.blur.bind(this);
+        this.focus           = this.focus.bind(this);
+        this.keyDown         = this.keyDown.bind(this);
+        this.showContextMenu = this.showContextMenu.bind(this);
+>>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Playlists/PlaylistsNav.react.js
     }
 
     render() {
@@ -39,11 +47,11 @@ class PlaylistsNav extends Component {
                 navItemContent = (
                     <input
                         type='text'
-                        ref='renamedPlaylist'
+                        autoFocus
                         defaultValue={ elem.name }
                         onKeyDown={ self.keyDown }
                         onBlur={ self.blur }
-                        autofocus
+                        onFocus={ self.focus }
                     />
                 );
             } else {
@@ -80,11 +88,31 @@ class PlaylistsNav extends Component {
         );
     }
 
+<<<<<<< HEAD:src/renderer/components/Playlists/PlaylistsNav.react.js
     componentDidUpdate = () => {
         // If a playlist is being update
         if (!!this.refs.renamedPlaylist && document.activeElement !== this.refs.renamedPlaylist) {
             this.refs.renamedPlaylist.select();
         }
+=======
+    componentDidMount() {
+        const self = this;
+
+        ipcRenderer.on('playlistContextMenuReply', (event, reply, _id) => {
+            switch(reply) {
+                case 'delete':
+                    AppActions.playlists.remove(_id);
+                    break;
+                case 'rename':
+                    self.setState({ renamed: _id });
+                    break;
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        ipcRenderer.removeAllListeners('playlistContextMenuReply');
+>>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Playlists/PlaylistsNav.react.js
     }
 
     showContextMenu(_id) {
@@ -133,6 +161,10 @@ class PlaylistsNav extends Component {
     blur = (e) => {
         this.rename(this.state.renamed, e.currentTarget.value);
         this.setState({ renamed: null });
+    }
+
+    focus(e) {
+        e.currentTarget.select();
     }
 }
 

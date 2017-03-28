@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import { Col, Button, ButtonGroup } from 'react-bootstrap';
+import { Col, Button, ButtonGroup, ProgressBar } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Icon from 'react-fontawesome';
 
+<<<<<<< HEAD:src/renderer/components/Footer/Footer.react.js
 import OutputDevice from '../OutputDevice';
 import utils from '../../../shared/utils/utils';
+=======
+import classnames from 'classnames';
+
+import utils from '../../utils/utils';
+>>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Footer/Footer.react.js
 
 
 /*
@@ -17,7 +23,7 @@ class Footer extends Component {
 
     static propTypes = {
         tracks: React.PropTypes.array,
-        refreshingLibrary: React.PropTypes.bool
+        library: React.PropTypes.object
     }
 
     constructor(props) {
@@ -26,21 +32,33 @@ class Footer extends Component {
 
     render() {
         const tracks = this.props.tracks;
-        const status = (tracks !== null) ? utils.getStatus(tracks) : 'An apple a day keeps Dr Dre away';
+        let status = (tracks !== null) ? utils.getStatus(tracks) : 'An apple a day keeps Dr Dre away';
+
+        const progressBarClasses = classnames('library-refresh-progress', {
+            'hidden': !this.props.library.refreshing,
+        });
+
+        const library = this.props.library;
+
+        if(library.refreshing) {
+            const progress = Math.round(library.refresh.processed / library.refresh.total * 100);
+
+            status = <ProgressBar className={ progressBarClasses } now={ progress } />;
+        }
 
         const navButtons = (
             <ButtonGroup className='view-switcher'>
-                <LinkContainer to='/library' disabled={ this.props.refreshingLibrary }>
+                <LinkContainer to='/library'>
                     <Button className='view-link'>
                         <Icon name='align-justify' fixedWidth />
                     </Button>
                 </LinkContainer>
-                <LinkContainer to='/playlists' disabled={ this.props.refreshingLibrary }>
+                <LinkContainer to='/playlists'>
                     <Button className='view-link'>
                         <Icon name='star' fixedWidth />
                     </Button>
                 </LinkContainer>
-                <LinkContainer to='/settings' disabled={ this.props.refreshingLibrary }>
+                <LinkContainer to='/settings'>
                     <Button className='view-link'>
                         <Icon name='gear' fixedWidth />
                     </Button>

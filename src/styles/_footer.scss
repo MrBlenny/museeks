@@ -46,6 +46,7 @@ footer {
         padding-top: 7px;
         padding-bottom: 7px;
         color: #888;
+<<<<<<< HEAD
         flex: 1;
     }
 
@@ -57,5 +58,19 @@ footer {
         font-size: 12px;
         color: #888;
         border-left: 1px solid #AAA;
+=======
+
+        .progress {
+            display: inline-block;
+            width: 100%;
+            vertical-align: middle;
+            height: 5px;
+            margin-bottom: 0;
+
+            .progress-bar {
+                background-color: $main-color;
+            }
+        }
+>>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da
     }
 }

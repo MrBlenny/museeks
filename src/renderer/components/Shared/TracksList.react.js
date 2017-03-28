@@ -63,7 +63,65 @@ class TracksList extends Component {
         );
     }
 
+<<<<<<< HEAD:src/renderer/components/Shared/TracksList.react.js
     scrollTracksList = () => this.setState({ scrollTop : document.querySelector('.tracks-list-body').scrollTop });
+=======
+    componentDidMount() {
+        const self = this;
+
+        ipcRenderer.on('tracksListContextMenuReply', async (event, reply, data) => {
+            const selected = self.state.selected;
+
+            switch(reply) {
+                case 'addToQueue': {
+                    AppActions.queue.add(selected);
+                    break;
+                }
+                case 'playNext': {
+                    AppActions.queue.addNext(selected);
+                    break;
+                }
+                case 'addToPlaylist': {
+                    const isShown = self.props.type === 'playlist' && data === self.props.currentPlaylist;
+                    AppActions.playlists.addTracksTo(data.playlistId, selected, isShown);
+                    break;
+                }
+                case 'removeFromPlaylist': {
+                    if(self.props.type === 'playlist') {
+                        AppActions.playlists.removeTracksFrom(self.props.currentPlaylist, selected);
+                    }
+                    break;
+                }
+                case 'createPlaylist': {
+                    const playlistId = await AppActions.playlists.create('New playlist', false);
+                    const isShown = self.props.type === 'playlist' && data === self.props.currentPlaylist;
+                    AppActions.playlists.addTracksTo(playlistId, selected, isShown);
+                    break;
+                }
+                case 'searchFor': {
+                    // small hack, we can't call AppActions.library.filterSearch directly
+                    // otherwise the search clear button would not appear, because it will not detect an input event on itself
+                    const searchInput = document.querySelector('input[type="text"].search');
+                    searchInput.value = data.search;
+                    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    break;
+                }
+                case 'removeFromLibrary': {
+                    AppActions.library.removeFromLibrary(selected);
+                    break;
+                }
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        ipcRenderer.removeAllListeners('tracksListContextMenuReply');
+    }
+
+    scrollTracksList() {
+        this.setState({ scrollTop : document.querySelector('.tracks-list-body').scrollTop });
+    }
+>>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Shared/TracksList.react.js
 
     selectTrack = (e, id, index) => {
         if (this.isLeftClick(e) || (this.isRightClick(e) && this.isSelectableTrack(id))) {

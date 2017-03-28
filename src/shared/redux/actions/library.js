@@ -9,82 +9,87 @@ const realpath = Promise.promisify(fs.realpath);
 
 const library = (lib) => {
 
-    const addFolders = () => (dispatch, getState) => {
-        const dialog = electron.remote
-            ? electron.remote.dialog
-            : electron.dialog;
+    const add = (pathsToScan) => (dispatch, getState) => {
+        dispatch({
+            type : 'LIBRARY/REFRESH_PENDING'
+        });
 
-        dialog.showOpenDialog({
-             properties: ['openDirectory', 'multiSelections']
-        }, (folders) => {
-            if (folders) {
-                Promise.map(folders, (folder) => {
-                    return realpath(folder);
-                }).then((resolvedFolders) => {
-                    const existingFolders = getState().config.musicFolders;
-                    const musicFolders = existingFolders.concat(resolvedFolders);
-                    const folders = utils.removeUselessFolders(musicFolders);
-                    folders.sort();
+        let rootFiles; // HACK Kind of hack, looking for a better solution
 
-                    dispatch(lib.actions.config.set('musicFolders', folders));
+        // Scan folders and add files to library
+        new Promise((resolve) => {
+            const paths = Promise.map(pathsToScan, (path) => {
+                return statAsync(path).then((stat) => {
+                    return {
+                        path,
+                        stat
+                    };
                 });
-             }
-         });
-    };
+            });
 
-    const removeFolder = (index) => (dispatch, getState) => {
-        const state = getState();
-        if (!state.library.refreshingLibrary) {
-            const folders = state.config.musicFolders;
-            folders.splice(index, 1);
+            resolve(paths);
+        }).then((paths) => {
+            const files = [];
+            const folders = [];
 
-            dispatch(lib.actions.config.set('musicFolders', folders));
-        }
-    };
+            paths.forEach((elem) => {
+                if(elem.stat.isFile()) files.push(elem.path);
+                if(elem.stat.isDirectory() || elem.stat.isSymbolicLink()) folders.push(elem.path);
+            });
 
-    const rescan = () => (dispatch, getState) => {
+            rootFiles = files;
 
-        dispatch({ type: 'LIBRARY/RESCAN_PENDING' });
-        const dispatchEnd = () => dispatch({ type: 'LIBRARY/RESCAN_FULFILLED' });
-
-        const folders = getState().config.musicFolders;
-        const fsConcurrency = 32;
-
-        return lib.track.remove({}, { multi: true }).then(() => {
             return Promise.map(folders, (folder) => {
-                const pattern = join(folder, '**/*.*');
+                const pattern = path.join(folder, '**/*.*');
                 return globby(pattern, { nodir: true, follow: true });
             });
-        }).then((filesArrays) => {
-            return filesArrays.reduce((acc, array) => acc.concat(array), []).filter((path) => {
-                const extension = extname(path).toLowerCase();
-                return utils.supportedExtensions.includes(extension);
-            });
+        }).then((files) => {
+            // Merge all path arrays together and filter them with the extensions we support
+            const flatFiles = files.reduce((acc, array) => acc.concat(array), [])
+                .concat(rootFiles)
+                .filter((filePath) => {
+                    const extension = path.extname(filePath).toLowerCase();
+                    return app.supportedExtensions.includes(extension);
+                }
+            );
+
+            return flatFiles;
         }).then((supportedFiles) => {
             if (supportedFiles.length === 0) {
-                return dispatchEnd();
+                return;
             }
 
-            const totalFiles = supportedFiles.length;
-            return Promise.map(supportedFiles, (path, numAdded) => {
-                return lib.track.find({ query: { path } })
-                .then((docs) => docs.length === 0
-                    ? utils.getMetadata(path)
-                    : docs[0])
-                .then(lib.track.insert)
-                .then(() => {
-                    const percent = parseInt(numAdded * 100 / totalFiles);
-                    dispatch(lib.actions.settings.refreshProgress(percent));
+            // Add files to be processed to the scan object
+            scan.total += supportedFiles.length;
+
+            supportedFiles.forEach((filePath) => {
+                scanQueue.push((callback) => {
+                    return app.models.Track.findAsync({ path: filePath }).then((docs) => {
+                        if (docs.length === 0) {
+                            return utils.getMetadata(filePath);
+                        }
+                        return null;
+                    }).then((track) => {
+                        // If null, that means a track with the same absolute path already exists in the database
+                        if(track === null) return;
+                        // else, insert the new document in the database
+                        return app.models.Track.insertAsync(track);
+                    }).then(() => {
+                        scan.processed++;
+                        callback();
+                    });
                 });
-            }, { concurrency: fsConcurrency });
-        }).then(() => {
-            dispatchEnd();
-            dispatch(lib.actions.tracks.find());
+            });
+        }).catch((err) => {
+            console.warn(err);
         });
+
+        // TODO progressive loading in the store, don't freeze the app, able to add files/folders when scanning
     };
 
+
     return {
-        addFolders,
+        add,
         removeFolder,
         rescan
     };

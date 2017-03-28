@@ -33,11 +33,7 @@ class Library extends Component {
 
     getLibraryComponent = () => {
         // Loading library
-<<<<<<< HEAD:src/renderer/components/Library/Library.react.js
-        if (this.props.library === null) {
-=======
         if(this.props.tracks.all === null) {
->>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Library/Library.react.js
             return (
                 <FullViewMessage>
                     <p>Loading library...</p>
@@ -81,13 +77,8 @@ class Library extends Component {
         return (
             <TracksList
                 type='library'
-<<<<<<< HEAD:src/renderer/components/Library/Library.react.js
                 playStatus={ this.props.playStatus }
-                tracks={ this.props.tracks }
-=======
-                playerStatus={ this.props.playerStatus }
                 tracks={ this.props.tracks.sub }
->>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Library/Library.react.js
                 trackPlayingId={ this.props.trackPlayingId }
                 playlists={ this.props.playlists }
             />

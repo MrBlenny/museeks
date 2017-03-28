@@ -33,11 +33,7 @@ class Playlist extends Component {
     }
 
     render() {
-<<<<<<< HEAD:src/renderer/components/Playlists/Playlist.react.js
-        if (Array.isArray(this.props.tracks) && this.props.tracks.length > 0) {
-=======
         if(Array.isArray(this.props.tracks.sub) && this.props.tracks.sub.length > 0) {
->>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Playlists/Playlist.react.js
             return (
                 <TracksList
                     type='playlist'

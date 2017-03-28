@@ -95,6 +95,15 @@ const trackList = (data) => {
             }
         };
 
+        const itemRemoveFromLibrary = {
+            label: 'Remove from library',
+            click: () => {
+                resolve({
+                    reply: 'removeFromLibrary'
+                });
+            }
+        };
+
         const getPlaylistTemplate = () => {
             return data.playlists
             ? [
@@ -126,6 +135,7 @@ const trackList = (data) => {
             ...(data.type === 'playlist'
                 ? [itemRemoveFromPlaylist]
                 : []),
+            itemRemoveFromLibrary,
         ];
 
         const menu = Menu.buildFromTemplate(template);

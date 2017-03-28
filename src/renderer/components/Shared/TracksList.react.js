@@ -63,9 +63,6 @@ class TracksList extends Component {
         );
     }
 
-<<<<<<< HEAD:src/renderer/components/Shared/TracksList.react.js
-    scrollTracksList = () => this.setState({ scrollTop : document.querySelector('.tracks-list-body').scrollTop });
-=======
     componentDidMount() {
         const self = this;
 
@@ -121,7 +118,6 @@ class TracksList extends Component {
     scrollTracksList() {
         this.setState({ scrollTop : document.querySelector('.tracks-list-body').scrollTop });
     }
->>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Shared/TracksList.react.js
 
     selectTrack = (e, id, index) => {
         if (this.isLeftClick(e) || (this.isRightClick(e) && this.isSelectableTrack(id))) {

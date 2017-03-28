@@ -3,14 +3,9 @@ import { Col, Button, ButtonGroup, ProgressBar } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Icon from 'react-fontawesome';
 
-<<<<<<< HEAD:src/renderer/components/Footer/Footer.react.js
 import OutputDevice from '../OutputDevice';
 import utils from '../../../shared/utils/utils';
-=======
 import classnames from 'classnames';
-
-import utils from '../../utils/utils';
->>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Footer/Footer.react.js
 
 
 /*

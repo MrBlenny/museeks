@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD:src/renderer/components/Settings/SettingsLibrary.react.js
 import { connect } from 'react-redux';
-import { ButtonGroup, Button, ProgressBar } from 'react-bootstrap';
+import { ButtonGroup, Button } from 'react-bootstrap';
 import Icon from 'react-fontawesome';
 import classnames from 'classnames';
-=======
-import { ButtonGroup, Button } from 'react-bootstrap';
->>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Settings/SettingsLibrary.react.js
 
 import Dropzone from '../Shared/Dropzone.react';
 
@@ -33,27 +29,10 @@ class SettingsLibrary extends Component {
     }
 
     render() {
-<<<<<<< HEAD:src/renderer/components/Settings/SettingsLibrary.react.js
-        const musicFolders = this.props.musicFolders;
-
-        const buttonsGroup = (
-            <ButtonGroup>
-                <Button bsSize='small' disabled={ this.props.refreshingLibrary } onClick={ this.addFolders }>
-                    <Icon name='plus' fixedWidth />
-                    Add folder(s)
-                </Button>
-                <Button bsSize='small' disabled={ this.props.refreshingLibrary } onClick={ this.refreshLibrary }>
-                    <Icon name='refresh' spin={ this.props.refreshingLibrary } />
-                      { this.props.refreshingLibrary ? 'Refreshing Library' : 'Refresh Library' }
-                </Button>
-                <Button bsSize='small' disabled={ this.props.refreshingLibrary } bsStyle={ 'danger' } onClick={ this.deleteLibrary }>
-                    Delete library
-=======
         const buttonsGroup = (
             <ButtonGroup>
                 <Button bsSize='small' disabled={ this.props.library.refreshing } bsStyle={ 'danger' } onClick={ this.resetLibrary }>
                     Reset library
->>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Settings/SettingsLibrary.react.js
                 </Button>
             </ButtonGroup>
         );
@@ -74,23 +53,9 @@ class SettingsLibrary extends Component {
         );
     }
 
-<<<<<<< HEAD:src/renderer/components/Settings/SettingsLibrary.react.js
-    addFolders = () => {
-        this.props.addFolders();
-    }
-
-    deleteLibrary = () => {
-        this.props.stop();
-        this.props.remove();
-    }
-
-    refreshLibrary = () => {
-        this.props.stop();
-        this.props.rescan();
-=======
     resetLibrary() {
-        AppActions.player.stop();
-        AppActions.library.reset();
+        this.props.stop();
+        this.props.reset();
     }
 
     onDrop(e) {
@@ -101,7 +66,7 @@ class SettingsLibrary extends Component {
             files.push(eventFiles[i].path);
         }
 
-        AppActions.library.add(files);
+        this.props.add(files);
     }
 
     openFolderSelector() {
@@ -109,10 +74,9 @@ class SettingsLibrary extends Component {
             properties: ['multiSelections', 'openDirectory']
         }, (result) => {
             if(result) {
-                AppActions.library.add(result);
+                this.props.add(result);
             }
         });
->>>>>>> 3241a9d16ad0c470ad9472632bff0c3ef97551da:src/js/components/Settings/SettingsLibrary.react.js
     }
 }
 
@@ -124,9 +88,8 @@ const stateToProps = (state) => ({
 
 const dispatchToProps = {
     stop: lib.actions.player.stop,
-    remove: lib.actions.library.remove,
-    addFolders: lib.actions.library.addFolders,
-    rescan: lib.actions.library.rescan
+    reset: lib.actions.library.reset,
+    add: lib.actions.library.add,
 };
 
 export default connect(stateToProps, dispatchToProps)(SettingsLibrary);

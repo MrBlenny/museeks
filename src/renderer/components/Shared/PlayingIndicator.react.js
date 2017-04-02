@@ -21,6 +21,7 @@ class TrackRow extends Component {
     }
 
     render() {
+        console.log('playing bar state', this.props.state)
         const classNames = classnames('playing-indicator', this.props.state, {
             'hovered': this.state.hovered,
         });

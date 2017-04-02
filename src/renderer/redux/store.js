@@ -15,7 +15,7 @@ const logger = createLogger({
     collapsed: true,
     predicate: (getState, action) => ![
         'PLAYER/SET_VOLUME',
-        'PLAYER/UPDATE_ELAPSED_TIME'
+        // 'PLAYER/UPDATE_ELAPSED_TIME'
     ].includes(action.type)
 });
 

@@ -20,6 +20,7 @@
     "compile": "webpack --config webpack.config.js --progress --colors",
     "lint": "eslint . --config .eslintrc --cache",
     "dev": "webpack --config webpack.config.js --progress --colors --watch",
+    "prod": "./node_modules/.bin/webpack --config webpack.config.js --env production && ./node_modules/.bin/electron .",
     "build": "npm run build:eslint && npm run build:compile && node build.js",
     "test": "node ./src/test | tap-spec",
     "test-watch": "nodemon ./src/test | tap-spec"
